@@ -48,9 +48,7 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
     private GoogleApiClient googleApiClient;
     private double currentLat, currentLong;
     private LocationRequest locationRequest;
-    private TextView mLocationMarkerText;
     private static final int REQUEST_CODE_AUTOCOMPLETE = 1;
-    private EditText mAddress;
     private TextView mRequest;
     private SupportPlaceAutocompleteFragment autocompleteFragment, pickUpautocomplete;
     private String TAG = "TRUCK";
@@ -81,13 +79,7 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
                         .target(pickUpLatLng).zoom(19f).tilt(70).build();
 
                 if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
+
                     return;
                 }
                 mMap.setMyLocationEnabled(true);
@@ -116,14 +108,7 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
             }
         });
 
-
-
-        mLocationMarkerText = view.findViewById(R.id.tv_locality);
-        mAddress = view.findViewById(R.id.ed_address);
         mRequest = view.findViewById(R.id.ed_request);
-
-
-        mLocationMarkerText.setOnClickListener(this);
         mRequest.setOnClickListener(this);
 
         buildGoogleClient();
@@ -229,75 +214,13 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
 
     }
 
-    private void openAutocompleteActivity() {
-        try {
-            // The autocomplete activity requires Google Play Services to be available. The intent
-            // builder checks this and throws an exception if it is not the case.
-            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                    .build(getActivity());
-            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
-        } catch (GooglePlayServicesRepairableException e) {
-            // Indicates that Google Play Services is either not installed or not up to date. Prompt
-            // the user to correct the issue.
-            GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), e.getConnectionStatusCode(),
-                    0 /* requestCode */).show();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            // Indicates that Google Play Services is not available and the problem is not easily
-            // resolvable.
-            String message = "Google Play Services is not available: " +
-                    GoogleApiAvailability.getInstance().getErrorString(e.errorCode);
 
-            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_AUTOCOMPLETE) {
-            if (resultCode == RESULT_OK) {
-                LatLng latLong;
-                Place place = PlacePicker.getPlace(getContext(), data);
-                mAddress.setText(place.getAddress());
-
-
-                latLong = place.getLatLng();
-                Log.d("place_picker", place.getLatLng().toString());
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(latLong).zoom(19f).tilt(70).build();
-
-                if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                mMap.setMyLocationEnabled(true);
-                mMap.animateCamera(CameraUpdateFactory
-                        .newCameraPosition(cameraPosition));
-
-            }else if (resultCode == PlacePicker.RESULT_ERROR){
-                Status status = PlacePicker.getStatus(getContext(),data);
-                showToast(status.getStatusMessage());
-            }else if (resultCode == RESULT_CANCELED){
-                showToast("Result canceled");
-            }
-
-        }
-    }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
 
-        if (id == R.id.tv_locality) {
-            openAutocompleteActivity();
-
-        } else if (id == R.id.ed_request) {
+        if (id == R.id.ed_request) {
             startActivity(new Intent(getContext(),reguest_truck.class));
         }
     }
