@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/ed_email"
+                style="@style/editText_style"
+                android:hint="Email address" />
+            <EditText
+                android:id="@+id/ed_password"
+                style="@style/editText_style"
+                android:hint="Email address" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rounded_corner_map"
+                android:textColor="@color/white"
+                android:text="Login"
+                android:id="@+id/btnlogin"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    android:layout_weight="1"
+                    android:text="Dont have account"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/white"
+                    android:background="@drawable/rounded_corner_map"
+                    android:text="create account"
+                    android:id="@+id/btncreatAccount"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

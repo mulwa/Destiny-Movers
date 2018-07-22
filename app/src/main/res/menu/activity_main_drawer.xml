@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_request_transport"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Request Transport" />
+        <item
+            android:id="@+id/nav_my_order"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="My order" />
+
+    </group>
+
+    <item android:title="Personal">
+        <menu>
+            <item
+                android:id="@+id/nav_profile"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Profile"/>
+            <item
+                android:id="@+id/nav_sign_up"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Sign Up" />
+            <item
+                android:id="@+id/nav_login"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Login"/>
+            <item
+                android:id="@+id/nav_assignVehicle"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Assign Truck"/>
+        </menu>
+    </item>
+
+</menu>

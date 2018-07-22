@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "679790811575",
+    "firebase_url": "https://destinymovers-3eaee.firebaseio.com",
+    "project_id": "destinymovers-3eaee",
+    "storage_bucket": "destinymovers-3eaee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679790811575:android:d3edb6f0b9236b24",
+        "android_client_info": {
+          "package_name": "com.example.gen.destinymovers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "679790811575-9jiptmpoko7997j6vod46hu5n8skf8f8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gen.destinymovers",
+            "certificate_hash": "194ee47d081ba63618a49ad9bce2adafa96dd1d0"
+          }
+        },
+        {
+          "client_id": "679790811575-fg5i4pki9lu7n3bb014t6nf0kc3v9jeu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDso3fpMAi4H55QXPNInZ3mfobJrTWt9Sw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "679790811575-fg5i4pki9lu7n3bb014t6nf0kc3v9jeu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
