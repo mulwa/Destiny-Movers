@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,9 +40,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
-
 public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListener {
     private GoogleMap mMap;
@@ -54,6 +52,7 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
     private String TAG = "TRUCK";
     private LatLng pickUpLatLng, dropLatLng;
     private String pick_up_address, drop_address;
+    private LinearLayout mDrop_place_wrapper;
 
 
     @Nullable
@@ -65,6 +64,7 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
 
         autocompleteFragment = (SupportPlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         pickUpautocomplete = (SupportPlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment1);
+        mDrop_place_wrapper = view.findViewById(R.id.drop_layout);
 
         pickUpautocomplete.setHint("Pick Up Location");
         autocompleteFragment.setHint("Destination Point");
@@ -74,6 +74,9 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
             public void onPlaceSelected(Place place) {
                 pickUpLatLng = place.getLatLng();
                 pick_up_address = place.getAddress().toString();
+                if (place.getLatLng() != null) {
+                    mDrop_place_wrapper.setVisibility(View.VISIBLE);
+                }
 
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(pickUpLatLng).zoom(19f).tilt(70).build();
@@ -215,13 +218,12 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
     }
 
 
-
     @Override
     public void onClick(View view) {
         int id = view.getId();
 
         if (id == R.id.ed_request) {
-            startActivity(new Intent(getContext(),reguest_truck.class));
+            startActivity(new Intent(getContext(), reguest_truck.class));
         }
     }
 
