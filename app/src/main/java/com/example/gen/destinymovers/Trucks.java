@@ -40,6 +40,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.DecimalFormat;
+
 public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListener {
     private GoogleMap mMap;
@@ -53,6 +55,7 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
     private LatLng pickUpLatLng, dropLatLng;
     private String pick_up_address, drop_address;
     private LinearLayout mDrop_place_wrapper;
+    private Double totalDistance;
 
 
     @Nullable
@@ -76,6 +79,8 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
                 pick_up_address = place.getAddress().toString();
                 if (place.getLatLng() != null) {
                     mDrop_place_wrapper.setVisibility(View.VISIBLE);
+                }else {
+                    mDrop_place_wrapper.setVisibility(View.INVISIBLE);
                 }
 
                 CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -223,12 +228,50 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
         int id = view.getId();
 
         if (id == R.id.ed_request) {
-            startActivity(new Intent(getContext(), reguest_truck.class));
+            if(pick_up_address == null){
+                showToast("Please select Pick Location");
+                return;
+            }
+            if(drop_address ==   null){
+                showToast("Please Enter Drop Destination");
+                return;
+            }
+            if(pickUpLatLng != null  && dropLatLng !=null){
+                totalDistance = CalculationByDistance(pickUpLatLng,dropLatLng);
+                showToast("Total Distance"+totalDistance);
+
+            }
+
+//            startActivity(new Intent(getContext(), reguest_truck.class));
         }
     }
 
     private void showToast(String msg) {
         Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
 
+    }
+    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec = Integer.valueOf(newFormat.format(km));
+        double meter = valueResult % 1000;
+        int meterInDec = Integer.valueOf(newFormat.format(meter));
+        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
+                + " Meter   " + meterInDec);
+
+        return Radius * c;
     }
 }
