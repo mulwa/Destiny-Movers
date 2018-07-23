@@ -8,4 +8,5 @@
 
     <dimen name="list_row_padding">14.0dip</dimen>
     <dimen name="font_22">20.0sp</dimen>
+    <color name="divider_color">#9E9E9E</color>
 </resources>

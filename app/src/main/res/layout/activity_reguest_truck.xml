@@ -14,5 +14,98 @@
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="Your Request details"/>
+            <View
+                style="@style/Divider"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/profile_header"
+                    android:text="Pick Up address" />
+
+                <TextView
+                    style="@style/profile_text"
+                    android:id="@+id/ed_pick_address"
+                    android:text="P01-140985" />
+            </LinearLayout>
+            <View style="@style/Divider" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/profile_header"
+                    android:text="Pick Up address" />
+
+                <TextView
+                    style="@style/profile_text"
+                    android:id="@+id/ed_drop_address"
+                    android:hint="drop  address" />
+            </LinearLayout>
+            <View style="@style/Divider" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    style="@style/profile_header"
+                    android:text="Cost (Ksh)" />
+
+                <TextView
+                    style="@style/profile_text"
+                    android:id="@+id/ed_cost"
+                    android:hint="200" />
+            </LinearLayout>
+            <View style="@style/Divider"
+                android:layout_marginBottom="5dp"/>
+
+            <EditText
+                android:id="@+id/ed_truck_type"
+                style="@style/editText_style"
+                android:hint="Enter type of  truck  you want" />
+            <EditText
+                android:id="@+id/ed_desc"
+                style="@style/editText_style"
+                android:hint="Any Note about your  request" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rounded_corner_map"
+                android:textColor="@color/white"
+                android:text="Request Transport"
+                android:id="@+id/btnrequest"/>
+
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>

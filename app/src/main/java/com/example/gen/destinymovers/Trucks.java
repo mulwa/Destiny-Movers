@@ -241,8 +241,15 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
                 showToast("Total Distance"+totalDistance);
 
             }
+            Intent intent = new Intent(getContext(), reguest_truck.class);
+            intent.putExtra("PICK_ADDRESS",pick_up_address);
+            intent.putExtra("DROP_ADDRESS",drop_address);
+            intent.putExtra("PICK_LATLNG", pickUpLatLng);
+            intent.putExtra("DROPLATLNG",dropLatLng);
+            intent.putExtra("DISTANCE",totalDistance);
 
-//            startActivity(new Intent(getContext(), reguest_truck.class));
+
+            startActivity(intent);
         }
     }
 
