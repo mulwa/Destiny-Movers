@@ -138,7 +138,7 @@ public class reguest_truck extends AppCompatActivity {
     }
     private void showDialog() {
         if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(getApplicationContext());
+            mProgressDialog = new ProgressDialog(reguest_truck.this);
             mProgressDialog.setMessage("Sending your  request Please wait...");
             mProgressDialog.setIndeterminate(true);
         }
