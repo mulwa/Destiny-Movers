@@ -45,6 +45,10 @@ public class MyRequestFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         mRecyclerView =  view.findViewById(R.id.rv_myRequest);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+
         userReqRef = database.getReference("requests").child("ByUser");
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -95,9 +99,6 @@ public class MyRequestFragment extends Fragment {
                 }
 //                set up recyclerview followed by  adapter
                 myRequestAdapter = new MyRequestAdapter(requestList,getContext());
-                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-                mRecyclerView.setLayoutManager(mLayoutManager);
-                mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
 
                 mRecyclerView.setAdapter(myRequestAdapter);
 
