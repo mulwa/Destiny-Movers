@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.gen.destinymovers.Pojo.Request;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,9 +31,12 @@ public class reguest_truck extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference  requestRef;
     private LatLng pickLatlng, dropLatLng;
-    private String cost;
     private String pick_address, drop_address;
     private Double distance;
+    private long costtopay;
+    private Double pickLat,pickLng;
+    private Double dropLat,  dropLng;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,8 @@ public class reguest_truck extends AppCompatActivity {
 
         m_pick_address.setText(pick_address);
         m_drop_address.setText(drop_address);
-        m_cost.setText(String.valueOf(distance));
+        costtopay = Math.round(distance * 10);
+        m_cost.setText(String.valueOf(costtopay));
 
         toolbar  = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,7 +85,6 @@ public class reguest_truck extends AppCompatActivity {
         m_note = findViewById(R.id.ed_desc);
         btn_request = findViewById(R.id.btnrequest);
 
-
     }
     private void getIntentData(){
         pick_address = getIntent().getStringExtra("PICK_ADDRESS");
@@ -88,6 +92,10 @@ public class reguest_truck extends AppCompatActivity {
         pickLatlng = getIntent().getExtras().getParcelable("PICK_LATLNG");
         dropLatLng = getIntent().getExtras().getParcelable("DROPLATLNG");
         distance = getIntent().getExtras().getDouble("DISTANCE");
+        currentUser = getIntent().getExtras().getParcelable("CURRENTUSER");
+
+
+
 
     }
     private void submitRequest(){
@@ -95,7 +103,9 @@ public class reguest_truck extends AppCompatActivity {
         String truck = m_truck.getText().toString().trim();
         String note = m_note.getText().toString().trim();
 
-        Request request = new Request(pick_address,pickLatlng,drop_address,dropLatLng,cost,truck,note);
+
+        final Request request = new Request(pick_address,drop_address,costtopay,
+                truck,note,dropLatLng.latitude,dropLatLng.longitude,dropLatLng.latitude,dropLatLng.longitude);
 
         requestRef.push().setValue(request, new DatabaseReference.CompletionListener() {
             @Override
@@ -103,6 +113,7 @@ public class reguest_truck extends AppCompatActivity {
                 hideDialog();
                 if(databaseError == null){
                     showToast("Your  Request has been submited");
+                    requestRef.child("ByUser").child(currentUser.getUid()).push().setValue(request);
                     clearUi();
 //                    finish();
                 }else {
@@ -130,6 +141,11 @@ public class reguest_truck extends AppCompatActivity {
         }
         if(TextUtils.isEmpty(m_note.getText().toString().trim())){
             showToast("Please Enter note about your request");
+            return false;
+        }
+        if(currentUser ==  null) {
+            showToast("Please Login  First");
+            return false;
         }
         return true;
     }

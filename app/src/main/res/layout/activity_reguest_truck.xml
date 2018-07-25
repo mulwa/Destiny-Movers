@@ -60,7 +60,7 @@
 
                 <TextView
                     style="@style/profile_header"
-                    android:text="Pick Up address" />
+                    android:text="Drop address" />
 
                 <TextView
                     style="@style/profile_text"

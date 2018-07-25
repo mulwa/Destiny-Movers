@@ -1,6 +1,7 @@
 package com.example.gen.destinymovers;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -15,9 +16,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FragmentManager manager;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private FirebaseDatabase database;
+    private DatabaseReference customerRef;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +37,31 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mAuth  = FirebaseAuth.getInstance();
         manager =  getSupportFragmentManager();
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                currentUser = firebaseAuth.getCurrentUser();
+
+                if(currentUser  == null){
+//                    login login = new login();
+//                    FragmentTransaction transaction = manager.beginTransaction();
+//                    transaction.replace(R.id.mainLayout,login,"loginFragment");
+//                    transaction.commit();
+
+                }
+
+            }
+        };
+
+
         Trucks trucks = new Trucks();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.mainLayout,trucks,"truckFragment");
         transaction.commit();
+
 
 
 
@@ -42,6 +73,20 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(authStateListener != null){
+            mAuth.removeAuthStateListener(authStateListener);
+        }
     }
 
     @Override
@@ -95,6 +140,11 @@ public class MainActivity extends AppCompatActivity
             login login = new login();
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.replace(R.id.mainLayout,login,"eventFragment");
+            transaction.commit();
+        }else if(id == R.id.nav_my_request){
+            MyRequestFragment myRequestFragment= new MyRequestFragment();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.replace(R.id.mainLayout,myRequestFragment,"myRequestFragment");
             transaction.commit();
 
         }

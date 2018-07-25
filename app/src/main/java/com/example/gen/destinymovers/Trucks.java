@@ -39,6 +39,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DecimalFormat;
 
@@ -56,6 +59,10 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
     private String pick_up_address, drop_address;
     private LinearLayout mDrop_place_wrapper;
     private Double totalDistance;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseDatabase database;
+    private FirebaseUser currentUser;
 
 
     @Nullable
@@ -64,6 +71,9 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
         View view = inflater.inflate(R.layout.activity_trucks, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         autocompleteFragment = (SupportPlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         pickUpautocomplete = (SupportPlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment1);
@@ -94,7 +104,7 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
                 mMap.animateCamera(CameraUpdateFactory
                         .newCameraPosition(cameraPosition));
-            }
+            } //end placepickerlistener
 
             @Override
             public void onError(Status status) {
@@ -121,6 +131,14 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
 
         buildGoogleClient();
 
+        authStateListener =  new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                currentUser = firebaseAuth.getCurrentUser();
+
+            }
+        };
+
         return view;
     }
 
@@ -130,6 +148,7 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
         if (!googleApiClient.isConnected()) {
             googleApiClient.connect();
         }
+        mAuth.addAuthStateListener(authStateListener);
     }
 
     @Override
@@ -137,6 +156,9 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
         super.onStop();
         if (googleApiClient.isConnected()) {
             googleApiClient.disconnect();
+        }
+        if(authStateListener != null){
+            mAuth.removeAuthStateListener(authStateListener);
         }
     }
 
@@ -218,7 +240,7 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
 
         }
 
-        Toast.makeText(getContext(), "Location changed:" + currentLat + "Longtitude:" + currentLong, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(), "Location changed:" + currentLat + "Longtitude:" + currentLong, Toast.LENGTH_LONG).show();
 
     }
 
@@ -236,6 +258,10 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
                 showToast("Please Enter Drop Destination");
                 return;
             }
+            if(currentUser == null){
+                showToast("Please Login First");
+                return;
+            }
             if(pickUpLatLng != null  && dropLatLng !=null){
                 totalDistance = CalculationByDistance(pickUpLatLng,dropLatLng);
                 showToast("Total Distance"+totalDistance);
@@ -247,6 +273,7 @@ public class Trucks extends Fragment implements OnMapReadyCallback, GoogleApiCli
             intent.putExtra("PICK_LATLNG", pickUpLatLng);
             intent.putExtra("DROPLATLNG",dropLatLng);
             intent.putExtra("DISTANCE",totalDistance);
+            intent.putExtra("CURRENTUSER",currentUser);
 
 
             startActivity(intent);

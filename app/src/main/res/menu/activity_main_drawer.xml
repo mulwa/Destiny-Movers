@@ -9,9 +9,9 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Request Transport" />
         <item
-            android:id="@+id/nav_my_order"
+            android:id="@+id/nav_my_request"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="My order" />
+            android:title="My Request" />
 
     </group>
 

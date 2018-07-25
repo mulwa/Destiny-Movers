@@ -148,7 +148,9 @@ public class signUp extends Fragment implements View.OnClickListener {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        saveUser();
+                                        FirebaseUser user = task.getResult().getUser();
+                                        String userId = user.getUid();
+                                        saveUser(userId);
                                     } else {
                                         Log.e(TAG, "createUserWithEmail:failure", task.getException());
                                         showToast("Unable to create account Please try a valid email" + task.getException());
@@ -170,9 +172,10 @@ public class signUp extends Fragment implements View.OnClickListener {
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
-    public void saveUser() {
+    public void saveUser(String userid) {
+        getInput();
         User customer = new User(surname, firstname, email, mobile);
-        customerRef.push().setValue(customer, new DatabaseReference.CompletionListener() {
+        customerRef.child(userid).setValue(customer, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 hideDialog();

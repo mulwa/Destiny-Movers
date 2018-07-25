@@ -4,25 +4,29 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Request {
     private String pickaddress;
-    private LatLng picklatlng;
     private String dropaddress;
-    private LatLng droplatlng;
-    private String cost;
+    private long cost;
     private String truckType;
     private String requestNote;
+    private Double  droplat;
+    private Double droplng;
+    private Double  picklat;
+    private Double picklng;
 
     public Request() {
     }
 
-    public Request(String pickaddress, LatLng picklatlng, String dropaddress,
-                   LatLng droplatlng, String cost, String truckType, String requestNote) {
+    public Request(String pickaddress, String dropaddress, long cost, String truckType, String requestNote,
+                   Double droplat, Double droplng, Double picklat, Double picklng) {
         this.pickaddress = pickaddress;
-        this.picklatlng = picklatlng;
         this.dropaddress = dropaddress;
-        this.droplatlng = droplatlng;
         this.cost = cost;
         this.truckType = truckType;
         this.requestNote = requestNote;
+        this.droplat = droplat;
+        this.droplng = droplng;
+        this.picklat = picklat;
+        this.picklng = picklng;
     }
 
     public String getPickaddress() {
@@ -33,14 +37,6 @@ public class Request {
         this.pickaddress = pickaddress;
     }
 
-    public LatLng getPicklatlng() {
-        return picklatlng;
-    }
-
-    public void setPicklatlng(LatLng picklatlng) {
-        this.picklatlng = picklatlng;
-    }
-
     public String getDropaddress() {
         return dropaddress;
     }
@@ -49,19 +45,11 @@ public class Request {
         this.dropaddress = dropaddress;
     }
 
-    public LatLng getDroplatlng() {
-        return droplatlng;
-    }
-
-    public void setDroplatlng(LatLng droplatlng) {
-        this.droplatlng = droplatlng;
-    }
-
-    public String getCost() {
+    public long getCost() {
         return cost;
     }
 
-    public void setCost(String cost) {
+    public void setCost(long cost) {
         this.cost = cost;
     }
 
@@ -79,5 +67,37 @@ public class Request {
 
     public void setRequestNote(String requestNote) {
         this.requestNote = requestNote;
+    }
+
+    public Double getDroplat() {
+        return droplat;
+    }
+
+    public void setDroplat(Double droplat) {
+        this.droplat = droplat;
+    }
+
+    public Double getDroplng() {
+        return droplng;
+    }
+
+    public void setDroplng(Double droplng) {
+        this.droplng = droplng;
+    }
+
+    public Double getPicklat() {
+        return picklat;
+    }
+
+    public void setPicklat(Double picklat) {
+        this.picklat = picklat;
+    }
+
+    public Double getPicklng() {
+        return picklng;
+    }
+
+    public void setPicklng(Double picklng) {
+        this.picklng = picklng;
     }
 }
